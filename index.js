@@ -22,10 +22,52 @@ async function unionStatesCities(){
 
 async function countCities(uf){
     const cityState = JSON.parse(await fs.readFile(uf + '.json'));
-    const totalCities = cityState.length;
-    console.log(`O Estado de ${uf.toUpperCase()} possuí ${totalCities} cidade(s).`);
-    return totalCities;
+    return cityState.length;
+}
+
+async function topFiveMoreCities(){
+    let totalCitiesForState = [];
+    const allStates = JSON.parse(await fs.readFile('Estados.json'));
+
+    totalCitiesForState = Promise.all(
+        allStates.map(async({Sigla}) => {
+            const obj = {
+                UF: Sigla,
+                totalCities: await countCities(Sigla)
+            };
+            return obj;
+        })
+    );
+
+    let topFive = await totalCitiesForState;
+    topFive.sort((a, b) => a.totalCities - b.totalCities);
+    for(let i = 0; i < 5; i++){
+        console.log(topFive[i]);
+    }
+}
+
+async function topFiveLessCities(){
+    let totalCitiesForState = [];
+    const allStates = JSON.parse(await fs.readFile('Estados.json'));
+
+    totalCitiesForState = Promise.all(
+        allStates.map(async({Sigla}) => {
+            const obj = {
+                UF: Sigla,
+                totalCities: await countCities(Sigla)
+            };
+            return obj;
+        })
+    );
+
+    let topFive = await totalCitiesForState;
+    topFive.sort((a, b) => b.totalCities - a.totalCities);
+    for(let i = 0; i < 5; i++){
+        console.log(topFive[i]);
+    }
 }
 
 unionStatesCities();
 countCities('SP');
+topFiveMoreCities();
+topFiveLessCities();
