@@ -1,4 +1,5 @@
 import  {promises as fs} from 'fs';
+import readline from 'readline';
 
 function unionStatesCities(){
     fs.readFile('Estados.json', 'utf-8').then((allStates) => {
@@ -30,4 +31,22 @@ function unionStatesCities(){
     });
 }
 
+function countCities(){
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+
+    rl.question('Informe o UF do estado desejado: ', (uf) => {
+        fs.readFile(uf + '.json').then((cityState) => {
+            const data = JSON.parse(cityState);
+            console.log(data.length);
+        }).catch(err => {
+            console.log(err);
+        });
+        rl.close();
+    });
+}
+
 unionStatesCities();
+countCities();
