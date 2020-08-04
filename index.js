@@ -40,8 +40,8 @@ async function countNames(uf){
         })
     );
 
-    let teste = await names;
-    return teste;
+    let countNames = await names;
+    return countNames;
 }
 
 async function topFiveMoreCities(){
@@ -61,9 +61,7 @@ async function topFiveMoreCities(){
 
     let topFive = await totalCitiesForState;
     topFive.sort((a, b) => b.totalCities - a.totalCities);
-    for(let i = 0; i < 5; i++){
-        console.log(topFive[i]);
-    }
+    console.log(topFive.slice(0,5)); //Slice é utilizado para pegar uma "fatia" do array.
 }
 
 async function topFiveLessCities(){
@@ -83,9 +81,7 @@ async function topFiveLessCities(){
 
     let topFive = await totalCitiesForState;
     topFive.sort((a, b) => a.totalCities - b.totalCities);
-    for(let i = 0; i < 5; i++){
-        console.log(topFive[i]);
-    }
+    console.log(topFive.slice(0,5)); //Slice é utilizado para pegar uma "fatia" do array.
 }
 
 async function biggestName(){
